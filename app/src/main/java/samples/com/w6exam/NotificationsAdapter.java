@@ -2,6 +2,7 @@ package samples.com.w6exam;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,6 +111,16 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: ");
+
+                    SharedPreferences sharedPref = context.
+                            getSharedPreferences("my_park_meter_pref", Context.MODE_PRIVATE);
+                    // Get shared preferences from mock-backend
+                    final SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("firstName", firstName.getText().toString());
+                    editor.putString("lastName", lastName.getText().toString());
+                    editor.putString("url", url.getText().toString());
+                    editor.commit();
+
                     Intent intent = new Intent(context, DetailActivity.class);
                     intent.putExtra("firstName", firstName.getText().toString());
                     intent.putExtra("lastName", lastName.getText().toString());
