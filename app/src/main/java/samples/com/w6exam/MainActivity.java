@@ -8,10 +8,15 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,10 +29,42 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Gson gson = new Gson();
-        Log.d(TAG, "onCreate: " + json);
+        //Log.d(TAG, "onCreate: " + json);
         Example example = gson.fromJson(json, Example.class);
-        Log.d(TAG, "onCreate: " + example.toString());
-        new NotificationsTask().execute();
+        //Log.d(TAG, "onCreate: " + example.toString());
+        /*try {
+            new NotificationsTask().execute();
+        } catch (Exception e) {
+
+        }*/
+        Observable<Example> resultGithubObservable = MyServiceRetrofitHelper.
+                Factory.createLogin(); // user
+
+
+        resultGithubObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Example>() {
+
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted: ");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Example example) {
+                        Log.d(TAG, "onNext: " + example.toString());
+                        List<Result> results = example.getResults();
+                        for (Result r : results) {
+                            Log.d(TAG, "onNext: " + r.toString());
+                        }
+                    }
+                });
 
     }
 
