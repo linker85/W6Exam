@@ -12,7 +12,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class MyServiceRetrofitHelper {
-    public static final String BASE_URL = "https://randomuser.me";
+    public static final String BASE_URL = "https://randomuser.me/";
 
     public static class Factory {
         public static Retrofit create() {
@@ -31,7 +31,7 @@ public class MyServiceRetrofitHelper {
     }
 
     public interface LoginService {
-        @GET("/api")
+        @GET("api")
         Observable<Example> getUsers();
     }
 }
