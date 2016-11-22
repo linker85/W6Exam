@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Gson gson = new Gson();
         Log.d(TAG, "onCreate: " + json);
+        Example example = gson.fromJson(json, Example.class);
         
     }
 }
