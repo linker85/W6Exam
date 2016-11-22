@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -31,8 +33,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
         return notificationsArrayList;
     }
 
-    public void setNotificationsArrayList(List<Result> notificationsArrayList) {
+    static EventBus eventBus;
+
+    public void setNotificationsArrayList(List<Result> notificationsArrayList, EventBus eventBus) {
         this.notificationsArrayList = notificationsArrayList;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -66,6 +71,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
             textViewName.setText("Pricing.rate.amount");
         }
 
+        TextView urlView = holder.url;
+        try {
+            urlView.setText("" + notification.getPicture().getThumbnail());
+        } catch (Exception e) {
+            urlView.setText("Pricing.rate.amount");
+        }
+
         holder.myNotification = notification;
     }
 
@@ -81,6 +93,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
         public TextView firstName;
         @BindView(R.id.last)
         public TextView lastName;
+        @BindView(R.id.url)
+        public TextView url;
         // Data
         public Result myNotification;
 
@@ -96,6 +110,8 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: ");
+                    eventBus.post(new UpdateMapEvent(firstName.getText().toString(),
+                            lastName.getText().toString(), url.getText().toString()));
                 }
             });
         }
