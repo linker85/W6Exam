@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         // 3. Get data from database
                         notificationArrayList = example.getResults();
                         // 4. set adapter
-                        notificationAdapter.setNotificationsArrayList(notificationArrayList, eventBus);
+                        notificationAdapter.setNotificationsArrayList(notificationArrayList, getApplicationContext());
                         //notificationAdapter = new NotificationsAdapter(notificationArrayList);
                         notificationRecyclerView.setAdapter(notificationAdapter);
                         notificationRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

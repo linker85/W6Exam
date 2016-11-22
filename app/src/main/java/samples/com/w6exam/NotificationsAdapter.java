@@ -1,13 +1,13 @@
 package samples.com.w6exam;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -33,11 +33,11 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
         return notificationsArrayList;
     }
 
-    static EventBus eventBus;
+    static Context context;
 
-    public void setNotificationsArrayList(List<Result> notificationsArrayList, EventBus eventBus) {
+    public void setNotificationsArrayList(List<Result> notificationsArrayList, Context context) {
         this.notificationsArrayList = notificationsArrayList;
-        this.eventBus = eventBus;
+        this.context = context;
     }
 
     @Override
@@ -110,8 +110,12 @@ public class NotificationsAdapter extends RecyclerView.Adapter <NotificationsAda
                 @Override
                 public void onClick(View v) {
                     Log.d(TAG, "onClick: ");
-                    eventBus.post(new UpdateMapEvent(firstName.getText().toString(),
-                            lastName.getText().toString(), url.getText().toString()));
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    intent.putExtra("firstName", firstName.getText().toString());
+                    intent.putExtra("lastName", lastName.getText().toString());
+                    intent.putExtra("url", url.getText().toString());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }
