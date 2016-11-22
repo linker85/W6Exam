@@ -18,6 +18,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Log.d(TAG, "onCreate: " + json);
         Example example = gson.fromJson(json, Example.class);
-        
+        Log.d(TAG, "onCreate: " + example.toString());
     }
 }
